@@ -1,0 +1,3 @@
+<% provide :button_text, t("images.upload") %>
+$('#images-upload-modal').html('<%= j render "images/form", image: @image,  object: @imageable %>');
+$('#images-upload-modal').modal('show');

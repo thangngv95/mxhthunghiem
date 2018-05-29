@@ -1,0 +1,4 @@
+$('#image-comment-<%= @comment.id %>').remove();
+var size = <%= @image.comments
+  .hash_tree(limit_depth: Settings.limit_depth).size.to_s %>
+$('#comment-size-<%= @image.id %>').text(size);

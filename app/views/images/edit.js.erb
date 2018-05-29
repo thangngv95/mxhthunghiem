@@ -1,0 +1,3 @@
+<% provide :button_text, t("images.edit") %>
+$('#edit-image-modal-<%= @image.id %>').html('<%= j render "form",  image: @image, object: @image.imageable %>');
+$('#edit-image-modal-<%= @image.id %>').modal('show');
