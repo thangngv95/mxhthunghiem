@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="user-show">
+    <div class="user-show-left">
+      <div class="user-image">
+        <div class="user-cover">
+          <%= image_tag cover_user(@user), class: "img-responsive
+            img-user-cover" %>
+          <% if @user.current_user? current_user %>
+            <div class="user-cover-update-text" data-toggle="modal"
+              data-target="#user-cover-modal">
+              <%= t "change-cover" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="user-avatar">
+          <%= image_tag avatar_user(@user), class: "img-responsive
+            img-user-avatar" %>
+          <% if @user.current_user? current_user %>
+            <p class="user-avatar-update-text" data-toggle="modal"
+              data-target="#user-avatar-modal">
+              <%= t "change-avatar" %>
+            </p>
+          <% end %>
+        </div>
+
+        <div class="user-full-name">
+          <%= @user.name %>
+        </div>
+        <% unless @user.current_user? current_user %>
+          <div class="follow-users-btn">
+            <%= render "relationships/follow_form", user: @user %>
+          </div>
+        <% end %>
+      </div>
+      <div class="menu-group-actions">
+        <span>
+          <%= link_to t("users.group-joined"), "#" %>
+        </span>
+        <span>
+          <%= link_to t("users.list-albums"), "#" %>
+        </span>
+        <span>
+          <%= link_to t("users.images"), "#" %>
+        </span>
+        <span></span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4 user-show-left">
+        <div class="user-info">
+          <div class="user-form-info">
+            <div class="info">
+              <%= label_tag t("users.name") %> :
+              <%= @user.name %>
+            </div>
+            <div class="info">
+              <%= label_tag t("users.email") %> :
+              <%= @user.email %>
+            </div>
+            <% if @user.current_user? current_user %>
+              <%= link_to t("users.change-information"), edit_user_path(@user),
+                remote: true, class: "btn btn-primary" %>
+            <% end %>
+            <% if user_signed_in? && current_user.admin? &&
+              !@user.current_user?(current_user) %>
+              <%= link_to t("users.delete"),  @user, method: :delete,
+                data: {confirm: t("you_sure")}, class: "btn btn-danger" %>
+            <% end %>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="show-follow">
+          <h4>
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <span>
+              <%= t "users.followed" %>
+              <span id="number-following">
+                (<%= @supports.following.count %>)
+              </span>
+            </span>
+          </h4>
+          <hr>
+          <div class="news-feed-left-content" id="following-<%= @user.id %>">
+            <%= render "following", followings: @supports.following,
+              follower: @user %>
+          </div>
+        </div>
+        <div class="show-follow">
+          <h4>
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <span>
+              <%= t "users.followers" %>
+              <span id="number-follower">
+                (<%= @supports.followers.count %>)
+              </span>
+            </span>
+          </h4>
+          <hr>
+          <div class="news-feed-left-content" id="followers-<%= @user.id %>">
+            <%= render "followers", followers: @supports.followers,
+              followed: @user %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 user-show-right">
+      <% if @user.current_user? current_user %>
+        <div class="new-image">
+          <div class="description-field avatar-small">
+            <%= link_to image_tag(avatar_user(@user)), user_path(@user) %>
+            <%= link_to new_image_path(imageable_id: @user.id,
+              imageable_type: @user.class.name), remote: true do %>
+              <div class="upload-images-content">
+                <%= text_area_tag :search, params[:search],
+                  placeholder: t("images.upload"), class: "form-control" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if @supports.images.empty? %>
+        <h3 class="no-content"><%= t :no_content %></h3>
+      <% else %>
+        <% @supports.images.each do |image| %>
+          <%= render "images/image", image: image %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render "cover_form", user: @user %>
+    <%= render "avatar_form", user: @user %>
+  </div>
+</div>
+<div id="edit-user-modal" class="modal fade" role="dialog"></div>
+<div id="new-group-modal" class="modal fade" role="dialog"></div>
+<div id="images-upload-modal" class="modal fade" role="dialog"></div>

@@ -1,0 +1,14 @@
+<div id="images-modal-<%= image.id %>" class="modal fade show-full-size " role="dialog"">
+  <div class="modal-dialog images-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body img-responsive images-show-detail "  >
+        <%= image_tag image.image.url unless image.image.blank?  %>
+      </div>
+    </div>
+  </div>
+</div>
