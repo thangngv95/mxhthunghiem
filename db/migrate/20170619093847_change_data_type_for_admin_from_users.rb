@@ -1,5 +1,6 @@
 class ChangeDataTypeForAdminFromUsers < ActiveRecord::Migration[5.0]
   def change
-    change_column :users, :admin, :integer, default: 0
+    remove_column :users, :admin
+    add_column :users, :admin, :integer
   end
 end
